@@ -23,6 +23,7 @@ const Player = (props) => {
 
     React.useEffect(() => {
         video.current.addEventListener('loadeddata', function(){
+            console.log(video)
             setLoaded(true)
             let div = document.getElementsByClassName('c-pp')[0]
             video.current.addEventListener('ended', function(){
@@ -40,14 +41,14 @@ const Player = (props) => {
             video.current.addEventListener("canplay", function() { 
                 setHasHours(video.current.dutarion / 3600 >= 1.0)                 
                 duration.current.innerText = formatTime(video.current.duration, hasHours);
-                currentTime.current.innerText = formatTime(0, hasHours);
+                // currentTime.current.innerText = formatTime(0, hasHours);
             }, false);
 
             video.current.addEventListener("timeupdate", function() {
+                console.log('update')
                 currentTime.current.innerText = formatTime(video.current.currentTime, hasHours) 
                 var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
-                progress.current.style.width = Math.floor(prgrs * Number(props.width) - 300) + "px";
-                console.log(progress)
+                progress.current.style.width = Math.floor(prgrs * (Number(props.width) - 300)) + "px";
             }, false);
 
             // video.current.addEventListener("progress", function() {
@@ -80,8 +81,17 @@ const Player = (props) => {
         }
     }
 
+    const updateProgress = (e) => {
+        let x = (e.pageX - total.current.offsetLeft) / (Number(props.width) - 300);
+        video.current.currentTime = x * video.current.duration;
+        currentTime.current.innerText = formatTime(video.current.currentTime, hasHours)
+    }
+
     return(
-        <div style={{width: Number(props.width), height: Number(props.height)}}>
+        <div tabIndex='0' onKeyDown={e => {
+            console.log(e.key)
+            if (e.key === ' ') playClick()
+        }} style={{width: Number(props.width), height: Number(props.height)}}>
             <video 
                 id="video-player"
                 ref={video}
@@ -103,20 +113,20 @@ const Player = (props) => {
                             <div className="c-pp__icon" />
                         </div>
                     </div>
-                    <span ref={progress} id="progress">
-                        <span ref={total} onClick={e => {
-                            let x = (e.pageX - total.current.offsetLeft)/Number(props.width) - 300;
-                            video.current.currentTime = x * video.current.duration;
-                        }} id="total" style={{width: Number(props.width) - 300}}>
-                            <span ref={buffered} id="buffered"><span id="current">​</span></span>
-                        </span>
-                    </span>
                     <div id="time">
                         <div>
                             <span ref={currentTime} id="currenttime">00:00</span> / 
                             <span ref={duration} id="duration"> 00:00</span>
                         </div>
                     </div>
+                    {/* <div id='progress-line'> */}
+                    {/* <span ref={progress} id="progress"> */}
+                        <span ref={total} onClick={e => updateProgress(e)} id="total" style={{width: Number(props.width) - 300, height: 10, borderRadius: 5, cursor: 'pointer', marginTop: 25, backgroundColor: 'rgba(0,0,0,0.4)'}}>
+                            {/* <span ref={buffered} id="buffered"><span id="current">​</span></span> */}
+                        </span>
+                        <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 210, top: 25}} ref={progress} id="progress"></span>
+                    {/* </span> */}
+                    {/* </div> */}
                 </div> : null}
         </div>
     )
