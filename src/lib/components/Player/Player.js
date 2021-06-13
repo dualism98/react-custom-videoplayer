@@ -1,14 +1,25 @@
 import React from 'react';
-import { useSpring, animated, config} from 'react-spring'
 import './Player.css'
 
+// eslint-disable-next-line no-extend-native
+Number.prototype.lead0 = function(n) {
+    var nz = "" + this;
+    while (nz.length < n) {
+        nz = "0" + nz;
+    }
+    return nz;
+};
 
 const Player = (props) => {
     const video = React.useRef()
     const controls = React.useRef()
+    const duration = React.useRef()
+    const progress = React.useRef()
+    const total = React.useRef()
+    const currentTime = React.useRef()
+    const buffered = React.useRef()
     const [loaded, setLoaded] = React.useState(false)
-    const [paused, setPaused] = React.useState(true)
-    const { x } = useSpring({ config: { duration: 300 }, x: paused ? 1 : 0 });
+    const [hasHours, setHasHours] = React.useState(false)
 
     React.useEffect(() => {
         video.current.addEventListener('loadeddata', function(){
@@ -16,32 +27,56 @@ const Player = (props) => {
             let div = document.getElementsByClassName('c-pp')[0]
             video.current.addEventListener('ended', function(){
                 video.current.pause()
-                setPaused(true)
             })
 
             video.current.addEventListener("play", function() {
                 div.classList.add('is-play')
-                setPaused(false)
             });
                             
             video.current.addEventListener("pause", function() {
                 div.classList.remove('is-play')
-                setPaused(true)
             });
+
+            video.current.addEventListener("canplay", function() { 
+                setHasHours(video.current.dutarion / 3600 >= 1.0)                 
+                duration.current.innerText = formatTime(video.current.duration, hasHours);
+                currentTime.current.innerText = formatTime(0, hasHours);
+            }, false);
+
+            video.current.addEventListener("timeupdate", function() {
+                currentTime.current.innerText = formatTime(video.current.currentTime, hasHours) 
+                var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
+                progress.current.style.width = Math.floor(prgrs * Number(props.width) - 300) + "px";
+                console.log(progress)
+            }, false);
+
+            // video.current.addEventListener("progress", function() {
+            //     var buff = Math.floor(video.current.buffered.end(0)) / Math.floor(video.current.duration);
+            //     buffered.current.style.width =  Math.floor(buffered * controls.total.width()) + "px";
+            // }, false);
         })
     }, [])
 
     const playClick = () => {
         let div = document.getElementsByClassName('c-pp')[0]
-        console.log(div.classList)
         if (video.current.paused) {
             video.current.play()
             div.classList.add('is-play')
-            setPaused(false)
         } else {
             video.current.pause()
             div.classList.remove('is-play')
-            setPaused(true)
+        }
+    }
+
+    function formatTime(time, hours) {
+        var m = Math.floor(time / 60);
+            var s = Math.floor(time % 60);
+        if (hours) {
+            var h = Math.floor(time / 3600);
+            time = time - h * 3600;
+            return h.lead0(2)  + ":" + m.lead0(2) + ":" + s.lead0(2);
+        } else {
+            return m.lead0(2) + ":" + s.lead0(2);
         }
     }
 
@@ -66,6 +101,20 @@ const Player = (props) => {
                     <div id='button-div'>
                         <div className={"c-pp"} onClick={() => playClick()}>   
                             <div className="c-pp__icon" />
+                        </div>
+                    </div>
+                    <span ref={progress} id="progress">
+                        <span ref={total} onClick={e => {
+                            let x = (e.pageX - total.current.offsetLeft)/Number(props.width) - 300;
+                            video.current.currentTime = x * video.current.duration;
+                        }} id="total" style={{width: Number(props.width) - 300}}>
+                            <span ref={buffered} id="buffered"><span id="current">​</span></span>
+                        </span>
+                    </span>
+                    <div id="time">
+                        <div>
+                            <span ref={currentTime} id="currenttime">00:00</span> / 
+                            <span ref={duration} id="duration"> 00:00</span>
                         </div>
                     </div>
                 </div> : null}

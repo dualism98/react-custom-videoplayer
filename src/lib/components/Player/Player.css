@@ -8,8 +8,8 @@
     flex-direction: column;
     justify-content: center;
     height: 60px;
-    width: 50px;
-    /* border: 1px solid red; */
+    width: 70px;
+    border: 1px solid red;
 }
 
 #button-div:hover {
@@ -75,14 +75,39 @@
     flex-direction: row;
 }
 
-#controls span {
-    display:inline-block;
+#time {
+    width: 140px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid red;
 }
-        
-#playpause {
+
+span {
+    color: white;
+}
+
+#progress {
+    width: 0px;
+}
+            
+#total {
+    width:100%;                
+    background:#999;
+}
+            
+#buffered {
+    background:#ccc;
+}
+            
+#current {
     background:#eee;
-    color:#333;
+    line-height:0;
+    height:10px;
+}
+            
+#time {
+    color:#999;
     font-size:12pt;
-    text-transform:uppercase;
-    width:50px;
 }
