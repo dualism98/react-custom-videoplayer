@@ -1,0 +1,12 @@
+#controls span {
+    display:inline-block;
+}
+        
+#playpause {
+    background:#eee;
+    color:#333;
+    padding:0 5px;
+    font-size:12pt;
+    text-transform:uppercase;
+    width:50px;
+}
