@@ -16,3 +16,6 @@ In a React app use the Player component:
 | height      | Height of your player| string      | height={'800'}          
 | url         | URL of your video    | string      | url={'https://some.adress/video.mp4'} 
 | panelColor  | Color of bottom panel| string      | panelColor={'#006AB3'}  
+
+### Example
+![alt text](https://i.imgur.com/wMjBOPJ.png)
