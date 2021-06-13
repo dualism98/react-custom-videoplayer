@@ -1,3 +1,80 @@
+#video-player {
+    z-index: 0;
+    background: #000;
+}
+
+#button-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 60px;
+    width: 50px;
+    /* border: 1px solid red; */
+}
+
+#button-div:hover {
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.c-pp {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: block;
+    border: 3.3333333333px solid #fff;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0 auto 0 10px;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+
+.c-pp:hover {
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.c-pp__icon {
+    transform: translateX(20.4782608696px);
+    transition: all 0.2s ease;
+    border-top: 12px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 20px solid #fff;
+    position: absolute;
+    top: 8px;
+    left: -7px;
+}
+.c-pp.is-play .c-pp__icon {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    transition: all 0.2s ease;
+    width: 15px;
+    height: 20px;
+    transform: translateX(20.4615384615px);
+    top: 10px;
+    left: -7px;
+    border-top: 0 solid transparent;
+    border-right: 6.3333333333px solid #fff;
+    border-bottom: 0 solid transparent;
+    border-left: 6.3333333333px solid #fff;
+}
+  
+
+#controls {
+    position: absolute;
+    margin: -60px 0px 0px 0px;
+    text-align: left;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+}
+
 #controls span {
     display:inline-block;
 }
@@ -5,7 +82,6 @@
 #playpause {
     background:#eee;
     color:#333;
-    padding:0 5px;
     font-size:12pt;
     text-transform:uppercase;
     width:50px;

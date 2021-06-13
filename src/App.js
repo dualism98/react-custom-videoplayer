@@ -7,6 +7,7 @@ function App() {
       <Player 
         width={'800'}
         height={'500'}
+        panelColor={'#006AB3'}
         url={'https://archive.org/download/Bra_Bashing_/B_BASH.M4V'}/>
     </div>
   );
