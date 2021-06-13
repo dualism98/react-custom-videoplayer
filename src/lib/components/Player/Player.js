@@ -41,11 +41,9 @@ const Player = (props) => {
             video.current.addEventListener("canplay", function() { 
                 setHasHours(video.current.dutarion / 3600 >= 1.0)                 
                 duration.current.innerText = formatTime(video.current.duration, hasHours);
-                // currentTime.current.innerText = formatTime(0, hasHours);
             }, false);
 
             video.current.addEventListener("timeupdate", function() {
-                console.log('update')
                 currentTime.current.innerText = formatTime(video.current.currentTime, hasHours) 
                 var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
                 progress.current.style.width = Math.floor(prgrs * (Number(props.width) - 300)) + "px";
