@@ -1,6 +1,6 @@
 {
-  "description": "Two test React components",
-  "author": "Jawblia",
+  "description": "Videoplayer",
+  "author": "Dialism",
   "keywords": ["react", "components", "ui"],
   "version": "0.1.0",
   "private": false,
