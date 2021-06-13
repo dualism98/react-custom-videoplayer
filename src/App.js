@@ -8,7 +8,7 @@ function App() {
         width={'800'}
         height={'500'}
         panelColor={'#006AB3'}
-        url={'https://archive.org/download/Bra_Bashing_/B_BASH.M4V'}/>
+        url={'https://archive.org/download/rammsteinstripped/Rammstein%20-%20Stripped.mp4'}/>
     </div>
   );
 }
