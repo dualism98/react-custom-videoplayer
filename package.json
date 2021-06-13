@@ -4,7 +4,7 @@
   "author": "Dialism",
   "keywords": ["react", "components", "ui"],
   "license": "GNU General Public License v3.0",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -12,7 +12,7 @@
   "files": [ "dist", "README.md" ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dualism98/react-videoplayer.git"
+    "url": "git+https://github.com/dualism98/react-custom-videoplayer.git"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",

@@ -10,6 +10,18 @@ Number.prototype.lead0 = function(n) {
     return nz;
 };
 
+function formatTime(time, hours) {
+    var m = Math.floor(time / 60);
+        var s = Math.floor(time % 60);
+    if (hours) {
+        var h = Math.floor(time / 3600);
+        time = time - h * 3600;
+        return h.lead0(2)  + ":" + m.lead0(2) + ":" + s.lead0(2);
+    } else {
+        return m.lead0(2) + ":" + s.lead0(2);
+    }
+}
+
 const Player = (props) => {
     const video = React.useRef()
     const controls = React.useRef()
@@ -20,10 +32,11 @@ const Player = (props) => {
     const buffered = React.useRef()
     const [loaded, setLoaded] = React.useState(false)
     const [hasHours, setHasHours] = React.useState(false)
+    const [width, setScreenWidth] = React.useState(0)
 
     React.useEffect(() => {
+        setScreenWidth(Number(props.width))
         video.current.addEventListener('loadeddata', function(){
-            console.log(video)
             setLoaded(true)
             let div = document.getElementsByClassName('c-pp')[0]
             video.current.addEventListener('ended', function(){
@@ -44,15 +57,14 @@ const Player = (props) => {
             }, false);
 
             video.current.addEventListener("timeupdate", function() {
+                console.log('update')
+                const div = document.getElementById('video-container');
                 currentTime.current.innerText = formatTime(video.current.currentTime, hasHours) 
                 var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
-                progress.current.style.width = Math.floor(prgrs * (Number(props.width) - 300)) + "px";
+                progress.current.style.width = Math.floor(prgrs * (Number(div.style.width.slice(0, div.style.width.length - 2)) - 300)) + "px";
+                console.log(prgrs, width, prgrs * (width - 300))
+                console.log(progress.current.style.width)
             }, false);
-
-            // video.current.addEventListener("progress", function() {
-            //     var buff = Math.floor(video.current.buffered.end(0)) / Math.floor(video.current.duration);
-            //     buffered.current.style.width =  Math.floor(buffered * controls.total.width()) + "px";
-            // }, false);
         })
     }, [])
 
@@ -67,29 +79,41 @@ const Player = (props) => {
         }
     }
 
-    function formatTime(time, hours) {
-        var m = Math.floor(time / 60);
-            var s = Math.floor(time % 60);
-        if (hours) {
-            var h = Math.floor(time / 3600);
-            time = time - h * 3600;
-            return h.lead0(2)  + ":" + m.lead0(2) + ":" + s.lead0(2);
-        } else {
-            return m.lead0(2) + ":" + s.lead0(2);
-        }
-    }
-
     const updateProgress = (e) => {
-        let x = (e.pageX - total.current.offsetLeft) / (Number(props.width) - 300);
+        let x = (e.pageX - total.current.offsetLeft) / (width - 300);
+        console.log(x)
         video.current.currentTime = x * video.current.duration;
         currentTime.current.innerText = formatTime(video.current.currentTime, hasHours)
     }
 
+    const setFullScreen = () => {
+        const div = document.getElementById('video-container');
+        const controls = document.getElementById('controls')
+        const screen_width = window.screen.width
+        const screen_height = window.screen.height
+        setScreenWidth(screen_width)
+
+        var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
+        progress.current.style.width = Math.floor(prgrs * (screen_width - 300)) + "px";
+        video.current.width = screen_width
+        video.current.height = screen_height 
+        
+        if (div.requestFullscreen) {
+            div.requestFullscreen();
+        } else if (div.webkitRequestFullscreen) {
+            div.webkitRequestFullscreen();
+        } else if (div.msRequestFullScreen) {
+            div.msRequestFullScreen();
+        }
+            
+    }
+
     return(
-        <div tabIndex='0' onKeyDown={e => {
-            console.log(e.key)
+        <div id='video-container' tabIndex='0' onKeyDown={e => {
             if (e.key === ' ') playClick()
-        }} style={{width: Number(props.width), height: Number(props.height)}}>
+        }} onDoubleClick={() => {
+            setFullScreen()
+        }} style={{width: width, height: Number(props.height)}}>
             <video 
                 id="video-player"
                 ref={video}
@@ -103,9 +127,7 @@ const Player = (props) => {
             {loaded ? 
                 <div id="controls" 
                     style={{
-                        width: Number(props.width), 
-                        height: 60, 
-                        background: `linear-gradient(to top, ${props.panelColor}, rgba(0,0,0,0))`}}>
+                        background: `linear-gradient(to top, ${props.panelColor}, rgba(0,0,0,0))`, width: width}}>
                     <div id='button-div'>
                         <div className={"c-pp"} onClick={() => playClick()}>   
                             <div className="c-pp__icon" />
@@ -117,14 +139,10 @@ const Player = (props) => {
                             <span ref={duration} id="duration"> 00:00</span>
                         </div>
                     </div>
-                    {/* <div id='progress-line'> */}
-                    {/* <span ref={progress} id="progress"> */}
-                        <span ref={total} onClick={e => updateProgress(e)} id="total" style={{width: Number(props.width) - 300, height: 10, borderRadius: 5, cursor: 'pointer', marginTop: 25, backgroundColor: 'rgba(0,0,0,0.4)'}}>
+                        <span ref={total} onClick={e => updateProgress(e)} id="total" style={{width: width - 300, height: 10, borderRadius: 5, cursor: 'pointer', marginTop: 35, backgroundColor: 'rgba(0,0,0,0.4)', color: 'rgba(0,0,0,0.4)'}}>
                             {/* <span ref={buffered} id="buffered"><span id="current">​</span></span> */}
                         </span>
-                        <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 210, top: 25}} ref={progress} id="progress"></span>
-                    {/* </span> */}
-                    {/* </div> */}
+                        <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 210, top: 35}} ref={progress} id="progress"></span>
                 </div> : null}
         </div>
     )

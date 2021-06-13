@@ -3,11 +3,15 @@
     background: #000;
 }
 
+#video-container:focus{
+    outline: none;
+}
+
 #button-div {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 60px;
+    height: 80px;
     width: 70px;
     /* border: 1px solid red; */
 }
@@ -67,17 +71,24 @@
   
 
 #controls {
+    height: 80px;
     position: absolute;
-    margin: -60px 0px 0px 0px;
+    margin: -80px 0px 0px 0px;
     text-align: left;
     z-index: 1;
     display: flex;
     flex-direction: row;
+    /* border: 1px solid red; */
 }
+
+/* #controls, .invisible {
+    visibility: hidden;
+    transition: 0.5s;
+} */
 
 #time {
     width: 140px;
-    height: 60px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
