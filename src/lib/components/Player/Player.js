@@ -33,7 +33,6 @@ const Player = (props) => {
     const [loaded, setLoaded] = React.useState(false)
     const [hasHours, setHasHours] = React.useState(false)
     const [width, setScreenWidth] = React.useState(0)
-    const [fullscreen, turnFullScreen] = React.useState(false)
 
     React.useEffect(() => {
         setScreenWidth(Number(props.width))
@@ -87,14 +86,17 @@ const Player = (props) => {
         currentTime.current.innerText = formatTime(video.current.currentTime, hasHours)
     }
 
+    document.addEventListener('keypress', e => {
+        console.log(e.key)
+    })
+
     const setFullScreen = () => {
         const div = document.getElementById('video-container');
-        const controls = document.getElementById('controls')
         const screen_width = window.screen.width
         const screen_height = window.screen.height
 
         var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
-        if (!fullscreen){
+        if (!document.fullscreenElement){
             setScreenWidth(screen_width)
             progress.current.style.width = Math.floor(prgrs * (screen_width - 300)) + "px";
             video.current.width = screen_width
@@ -114,8 +116,6 @@ const Player = (props) => {
             video.current.height = Number(props.height)
             
         }
-            
-        turnFullScreen(!fullscreen)
     }
 
     return(
@@ -153,6 +153,11 @@ const Player = (props) => {
                             {/* <span ref={buffered} id="buffered"><span id="current">​</span></span> */}
                         </span>
                         <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 210, top: 35}} ref={progress} id="progress"></span>
+                    <div id='button-div'>
+                        <div className={"c-pp"} onClick={() => playClick()}>   
+                            <div className="c-pp__icon" />
+                        </div>
+                    </div>
                 </div> : null}
         </div>
     )
