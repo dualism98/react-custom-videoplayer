@@ -33,6 +33,7 @@ const Player = (props) => {
     const [loaded, setLoaded] = React.useState(false)
     const [hasHours, setHasHours] = React.useState(false)
     const [width, setScreenWidth] = React.useState(0)
+    const [fullscreen, turnFullScreen] = React.useState(false)
 
     React.useEffect(() => {
         setScreenWidth(Number(props.width))
@@ -91,21 +92,30 @@ const Player = (props) => {
         const controls = document.getElementById('controls')
         const screen_width = window.screen.width
         const screen_height = window.screen.height
-        setScreenWidth(screen_width)
 
         var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
-        progress.current.style.width = Math.floor(prgrs * (screen_width - 300)) + "px";
-        video.current.width = screen_width
-        video.current.height = screen_height 
-        
-        if (div.requestFullscreen) {
-            div.requestFullscreen();
-        } else if (div.webkitRequestFullscreen) {
-            div.webkitRequestFullscreen();
-        } else if (div.msRequestFullScreen) {
-            div.msRequestFullScreen();
+        if (!fullscreen){
+            setScreenWidth(screen_width)
+            progress.current.style.width = Math.floor(prgrs * (screen_width - 300)) + "px";
+            video.current.width = screen_width
+            video.current.height = screen_height 
+            if (div.requestFullscreen) {
+                div.requestFullscreen();
+            } else if (div.webkitRequestFullscreen) {
+                div.webkitRequestFullscreen();
+            } else if (div.msRequestFullScreen) {
+                div.msRequestFullScreen();
+            }
+        } else {
+            document.exitFullscreen()
+            setScreenWidth(Number(props.width))
+            progress.current.style.width = Math.floor(prgrs * (Number(props.width) - 300)) + "px";
+            video.current.width = Number(props.width)
+            video.current.height = Number(props.height)
+            
         }
             
+        turnFullScreen(!fullscreen)
     }
 
     return(
