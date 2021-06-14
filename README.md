@@ -17,5 +17,8 @@ In a React app use the Player component:
 | url         | URL of your video    | string      | url={'https://some.adress/video.mp4'} 
 | panelColor  | Color of bottom panel| string      | panelColor={'#006AB3'}  
 
+#### FullScreen Mode
+To turn on and turn off fullscreen double click on videoplayer :)
+
 ### Example
 ![alt text](https://i.imgur.com/wMjBOPJ.png)
