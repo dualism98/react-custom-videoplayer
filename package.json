@@ -4,7 +4,7 @@
   "author": "Dialism",
   "keywords": ["react", "components", "ui"],
   "license": "GNU General Public License v3.0",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",

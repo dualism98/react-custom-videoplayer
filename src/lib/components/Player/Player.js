@@ -1,5 +1,8 @@
 import React from 'react';
-import './Player.css'
+import fullscreen_logo from '../assets/fullscreen.png'
+import fullscreen_exit_logo from '../assets/fullscreen_exit.png'
+import volume_logo from '../assets/volume.png'
+import '../Styles/Player.css'
 
 // eslint-disable-next-line no-extend-native
 Number.prototype.lead0 = function(n) {
@@ -33,6 +36,7 @@ const Player = (props) => {
     const [loaded, setLoaded] = React.useState(false)
     const [hasHours, setHasHours] = React.useState(false)
     const [width, setScreenWidth] = React.useState(0)
+    const [fullscreen, makeFullscreen] = React.useState(false)
 
     React.useEffect(() => {
         setScreenWidth(Number(props.width))
@@ -94,7 +98,7 @@ const Player = (props) => {
         const div = document.getElementById('video-container');
         const screen_width = window.screen.width
         const screen_height = window.screen.height
-
+        makeFullscreen(!fullscreen)
         var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
         if (!document.fullscreenElement){
             setScreenWidth(screen_width)
@@ -115,6 +119,7 @@ const Player = (props) => {
             video.current.width = Number(props.width)
             video.current.height = Number(props.height)
             
+        
         }
     }
 
@@ -153,10 +158,13 @@ const Player = (props) => {
                             {/* <span ref={buffered} id="buffered"><span id="current">​</span></span> */}
                         </span>
                         <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 210, top: 35}} ref={progress} id="progress"></span>
-                    <div id='button-div'>
-                        <div className={"c-pp"} onClick={() => playClick()}>   
-                            <div className="c-pp__icon" />
-                        </div>
+                    <div id='setting-div'>
+                        <img src={volume_logo} id='volume-img'/>
+                    </div>
+                    <div id='setting-div'>
+                        {fullscreen ? 
+                            <img onClick={() => setFullScreen()} src={fullscreen_exit_logo} id='fullscreen-exit-img'/> : 
+                            <img onClick={() => setFullScreen()} src={fullscreen_logo} id='fullscreen-img'/>}
                     </div>
                 </div> : null}
         </div>
