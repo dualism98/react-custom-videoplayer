@@ -90,14 +90,30 @@ const Player = (props) => {
         currentTime.current.innerText = formatTime(video.current.currentTime, hasHours)
     }
 
-    document.addEventListener('keypress', e => {
-        console.log(e.key)
-    })
+    // document.addEventListener('fullscreenchange', function(e){
+    //     console.log(e)
+    //     const screen_width = window.screen.width
+    //     const screen_height = window.screen.height
+        // makeFullscreen(!fullscreen)
+        // var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
+        // if (document.fullscreenElement){
+        //     setScreenWidth(screen_width)
+            // progress.current.style.width = Math.floor(prgrs * (screen_width - 300)) + "px";
+            // video.current.width = screen_width
+            // video.current.height = screen_height 
+        // } else {
+        //     setScreenWidth(Number(props.width))
+            // progress.current.style.width = Math.floor(prgrs * (Number(props.width) - 300)) + "px";
+            // video.current.width = Number(props.width)
+            // video.current.height = Number(props.height)
+    //     }
+    // })
 
     const setFullScreen = () => {
         const div = document.getElementById('video-container');
         const screen_width = window.screen.width
         const screen_height = window.screen.height
+        return 0;
         makeFullscreen(!fullscreen)
         var prgrs = Math.floor(video.current.currentTime) / Math.floor(video.current.duration)
         if (!document.fullscreenElement){
@@ -157,7 +173,7 @@ const Player = (props) => {
                         <span ref={total} onClick={e => updateProgress(e)} id="total" style={{width: width - 300, height: 10, borderRadius: 5, cursor: 'pointer', marginTop: 35, backgroundColor: 'rgba(0,0,0,0.4)', color: 'rgba(0,0,0,0.4)'}}>
                             {/* <span ref={buffered} id="buffered"><span id="current">​</span></span> */}
                         </span>
-                        <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 210, top: 35}} ref={progress} id="progress"></span>
+                        <span onClick={e => updateProgress(e)} style={{height: 10, borderRadius: 5, position: 'absolute', cursor: 'pointer', left: 202, top: 35}} ref={progress} id="progress"></span>
                     <div id='setting-div'>
                         <img src={volume_logo} id='volume-img'/>
                     </div>
